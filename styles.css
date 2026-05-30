@@ -140,6 +140,12 @@ h2 {
   resize: vertical;
 }
 
+.form-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
 .task-form button {
   margin-top: 8px;
   padding: 12px 16px;
@@ -151,8 +157,21 @@ h2 {
   cursor: pointer;
 }
 
+.task-form .form-actions button {
+  margin-top: 0;
+}
+
 .task-form button:hover {
   background: var(--primary-dark);
+}
+
+.secondary-button {
+  color: var(--primary-dark);
+  background: #eaf4f7;
+}
+
+.secondary-button:hover {
+  background: #d9edf3;
 }
 
 .task-panel {
@@ -302,6 +321,20 @@ h2 {
   cursor: pointer;
 }
 
+.edit-button {
+  padding: 9px 12px;
+  border: 1px solid #bdd7df;
+  border-radius: 6px;
+  color: var(--primary-dark);
+  background: #eef6f9;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background: #d9edf3;
+}
+
 .delete-button:hover {
   background: #ffe7e4;
 }
@@ -362,6 +395,7 @@ h2 {
   .task-actions select,
   .filter-field,
   .filter-field select,
+  .edit-button,
   .delete-button,
   .clear-button {
     width: 100%;
