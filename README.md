@@ -18,6 +18,8 @@ The goal is to practice a complete small project workflow while learning data en
 - Delete tasks.
 - Save tasks in the browser with `localStorage`.
 - Show a simple progress summary.
+- Filter tasks by status.
+- Filter tasks by category.
 
 ## How to Run
 
@@ -48,6 +50,27 @@ Suggested commit rhythm:
 9. `docs: document project usage and learning goals`
 10. `refactor: organize tracker JavaScript functions`
 
+## Git Workflow Practice
+
+This project has been used to practice a realistic beginner Git and GitHub workflow:
+
+1. Initialize a local Git repository.
+2. Make the first commit with a working HTML, CSS, and JavaScript app.
+3. Connect the local repository to a GitHub remote.
+4. Push the `main` branch to GitHub.
+5. Create feature branches for small changes.
+6. Commit each feature with a clear message.
+7. Push feature branches to GitHub.
+8. Open Pull Requests from feature branches into `main`.
+9. Merge Pull Requests after confirming there are no conflicts.
+10. Delete merged feature branches locally and on GitHub.
+11. Pull the latest `main` branch back to the local computer.
+
+Completed practice branches:
+
+- `feature/status-filter`
+- `feature/category-filter`
+
 ## Suggested Learning Tasks
 
 Try adding tasks like:
@@ -64,8 +87,6 @@ Try adding tasks like:
 
 Keep these for later, after the first version works:
 
-- Filter by category
-- Filter by status
 - Edit existing tasks
 - Export tasks as JSON
 - Import tasks from JSON
