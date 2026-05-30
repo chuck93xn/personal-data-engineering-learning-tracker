@@ -4,6 +4,7 @@ const STATUS_OPTIONS = ["Not Started", "In Progress", "Done"];
 const taskForm = document.querySelector("#task-form");
 const taskList = document.querySelector("#task-list");
 const emptyState = document.querySelector("#empty-state");
+const clearTasksButton = document.querySelector("#clear-tasks-button");
 const totalCount = document.querySelector("#total-count");
 const progressCount = document.querySelector("#progress-count");
 const doneCount = document.querySelector("#done-count");
@@ -83,6 +84,18 @@ function deleteTask(taskId) {
   render();
 }
 
+function clearAllTasks() {
+  const confirmed = confirm("Clear all learning tasks? This cannot be undone.");
+
+  if (!confirmed) {
+    return;
+  }
+
+  tasks = [];
+  localStorage.removeItem(STORAGE_KEY);
+  render();
+}
+
 function formatDate(isoDate) {
   return new Intl.DateTimeFormat("en-AU", {
     year: "numeric",
@@ -158,6 +171,7 @@ function renderSummary() {
   totalCount.textContent = tasks.length;
   progressCount.textContent = tasks.filter((task) => task.status === "In Progress").length;
   doneCount.textContent = tasks.filter((task) => task.status === "Done").length;
+  clearTasksButton.disabled = tasks.length === 0;
 }
 
 function render() {
@@ -184,6 +198,7 @@ function handleTaskListChange(event) {
 }
 
 taskForm.addEventListener("submit", addTask);
+clearTasksButton.addEventListener("click", clearAllTasks);
 taskList.addEventListener("click", handleTaskListClick);
 taskList.addEventListener("change", handleTaskListChange);
 

@@ -164,7 +164,7 @@ h2 {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  align-items: start;
+  align-items: flex-start;
   margin-bottom: 18px;
 }
 
@@ -173,6 +173,26 @@ h2 {
   margin-bottom: 0;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.clear-button {
+  min-width: 132px;
+  padding: 9px 12px;
+  border: 1px solid #f3b6b1;
+  border-radius: 6px;
+  color: var(--danger);
+  background: #fff7f6;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clear-button:hover:not(:disabled) {
+  background: #ffe7e4;
+}
+
+.clear-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .empty-state {
@@ -293,6 +313,10 @@ h2 {
   .task-card-header {
     display: grid;
   }
+
+  .clear-button {
+    width: fit-content;
+  }
 }
 
 @media (max-width: 520px) {
@@ -308,7 +332,8 @@ h2 {
   }
 
   .task-actions select,
-  .delete-button {
+  .delete-button,
+  .clear-button {
     width: 100%;
   }
 }
