@@ -2,6 +2,9 @@ const STORAGE_KEY = "dataEngineeringLearningTasks";
 const STATUS_OPTIONS = ["Not Started", "In Progress", "Done"];
 
 const taskForm = document.querySelector("#task-form");
+const formHeading = document.querySelector("#form-heading");
+const submitTaskButton = document.querySelector("#submit-task-button");
+const cancelEditButton = document.querySelector("#cancel-edit-button");
 const taskList = document.querySelector("#task-list");
 const emptyState = document.querySelector("#empty-state");
 const clearTasksButton = document.querySelector("#clear-tasks-button");
@@ -14,6 +17,7 @@ const doneCount = document.querySelector("#done-count");
 let tasks = loadTasks();
 let currentStatusFilter = "All";
 let currentCategoryFilter = "All";
+let editingTaskId = null;
 
 function loadTasks() {
   const savedTasks = localStorage.getItem(STORAGE_KEY);
@@ -57,16 +61,38 @@ function addTask(event) {
   event.preventDefault();
 
   const formData = new FormData(taskForm);
-  const task = createTask(formData);
+  const topic = formData.get("topic").trim();
 
-  if (!task.topic) {
+  if (!topic) {
     return;
   }
 
-  tasks.unshift(task);
+  if (editingTaskId) {
+    updateTaskFromForm(editingTaskId, formData);
+    resetFormMode();
+  } else {
+    tasks.unshift(createTask(formData));
+  }
+
   saveTasks();
   render();
   taskForm.reset();
+}
+
+function updateTaskFromForm(taskId, formData) {
+  tasks = tasks.map((task) => {
+    if (task.id !== taskId) {
+      return task;
+    }
+
+    return {
+      ...task,
+      topic: formData.get("topic").trim(),
+      category: formData.get("category"),
+      status: formData.get("status"),
+      notes: formData.get("notes").trim()
+    };
+  });
 }
 
 function updateTaskStatus(taskId, status) {
@@ -84,6 +110,12 @@ function updateTaskStatus(taskId, status) {
 
 function deleteTask(taskId) {
   tasks = tasks.filter((task) => task.id !== taskId);
+
+  if (editingTaskId === taskId) {
+    resetFormMode();
+    taskForm.reset();
+  }
+
   saveTasks();
   render();
 }
@@ -96,8 +128,36 @@ function clearAllTasks() {
   }
 
   tasks = [];
+  editingTaskId = null;
   localStorage.removeItem(STORAGE_KEY);
+  resetFormMode();
+  taskForm.reset();
   render();
+}
+
+function startEditingTask(taskId) {
+  const task = tasks.find((item) => item.id === taskId);
+
+  if (!task) {
+    return;
+  }
+
+  editingTaskId = taskId;
+  taskForm.elements.topic.value = task.topic;
+  taskForm.elements.category.value = task.category;
+  taskForm.elements.status.value = task.status;
+  taskForm.elements.notes.value = task.notes;
+  formHeading.textContent = "Edit Learning Task";
+  submitTaskButton.textContent = "Update Task";
+  cancelEditButton.hidden = false;
+  taskForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function resetFormMode() {
+  editingTaskId = null;
+  formHeading.textContent = "Add Learning Task";
+  submitTaskButton.textContent = "Add Task";
+  cancelEditButton.hidden = true;
 }
 
 function getVisibleTasks() {
@@ -165,6 +225,9 @@ function renderTask(task) {
       <button class="delete-button" type="button" data-action="delete" data-id="${task.id}">
         Delete
       </button>
+      <button class="edit-button" type="button" data-action="edit" data-id="${task.id}">
+        Edit
+      </button>
     </div>
   `;
 
@@ -204,6 +267,10 @@ function handleTaskListClick(event) {
   if (action === "delete") {
     deleteTask(taskId);
   }
+
+  if (action === "edit") {
+    startEditingTask(taskId);
+  }
 }
 
 function handleTaskListChange(event) {
@@ -226,6 +293,10 @@ function handleCategoryFilterChange(event) {
 }
 
 taskForm.addEventListener("submit", addTask);
+cancelEditButton.addEventListener("click", () => {
+  resetFormMode();
+  taskForm.reset();
+});
 clearTasksButton.addEventListener("click", clearAllTasks);
 statusFilter.addEventListener("change", handleStatusFilterChange);
 categoryFilter.addEventListener("change", handleCategoryFilterChange);
