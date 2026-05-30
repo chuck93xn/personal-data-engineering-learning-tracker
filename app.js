@@ -6,12 +6,14 @@ const taskList = document.querySelector("#task-list");
 const emptyState = document.querySelector("#empty-state");
 const clearTasksButton = document.querySelector("#clear-tasks-button");
 const statusFilter = document.querySelector("#status-filter");
+const categoryFilter = document.querySelector("#category-filter");
 const totalCount = document.querySelector("#total-count");
 const progressCount = document.querySelector("#progress-count");
 const doneCount = document.querySelector("#done-count");
 
 let tasks = loadTasks();
 let currentStatusFilter = "All";
+let currentCategoryFilter = "All";
 
 function loadTasks() {
   const savedTasks = localStorage.getItem(STORAGE_KEY);
@@ -98,12 +100,13 @@ function clearAllTasks() {
   render();
 }
 
-function filterTasksByStatus() {
-  if (currentStatusFilter === "All") {
-    return tasks;
-  }
+function getVisibleTasks() {
+  return tasks.filter((task) => {
+    const matchesStatus = currentStatusFilter === "All" || task.status === currentStatusFilter;
+    const matchesCategory = currentCategoryFilter === "All" || task.category === currentCategoryFilter;
 
-  return tasks.filter((task) => task.status === currentStatusFilter);
+    return matchesStatus && matchesCategory;
+  });
 }
 
 function formatDate(isoDate) {
@@ -169,13 +172,13 @@ function renderTask(task) {
 }
 
 function renderTasks() {
-  const visibleTasks = filterTasksByStatus();
+  const visibleTasks = getVisibleTasks();
 
   taskList.innerHTML = "";
   emptyState.classList.toggle("is-hidden", visibleTasks.length > 0);
   emptyState.textContent = tasks.length === 0
     ? "No tasks yet. Add your first learning task to begin."
-    : `No ${currentStatusFilter.toLowerCase()} tasks found.`;
+    : "No tasks match the selected filters.";
 
   visibleTasks.forEach((task) => {
     taskList.appendChild(renderTask(task));
@@ -217,9 +220,15 @@ function handleStatusFilterChange(event) {
   renderTasks();
 }
 
+function handleCategoryFilterChange(event) {
+  currentCategoryFilter = event.target.value;
+  renderTasks();
+}
+
 taskForm.addEventListener("submit", addTask);
 clearTasksButton.addEventListener("click", clearAllTasks);
 statusFilter.addEventListener("change", handleStatusFilterChange);
+categoryFilter.addEventListener("change", handleCategoryFilterChange);
 taskList.addEventListener("click", handleTaskListClick);
 taskList.addEventListener("change", handleTaskListChange);
 

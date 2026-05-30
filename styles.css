@@ -198,19 +198,24 @@ h2 {
 .filter-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
+  gap: 12px;
+  align-items: flex-end;
   justify-content: flex-end;
   margin-bottom: 18px;
 }
 
-.filter-row label {
+.filter-field {
+  display: grid;
+  gap: 6px;
+}
+
+.filter-field label {
   color: var(--muted);
   font-size: 0.92rem;
   font-weight: 700;
 }
 
-.filter-row select {
+.filter-field select {
   min-width: 160px;
   padding: 9px 10px;
   border: 1px solid var(--border);
@@ -355,7 +360,8 @@ h2 {
   }
 
   .task-actions select,
-  .filter-row select,
+  .filter-field,
+  .filter-field select,
   .delete-button,
   .clear-button {
     width: 100%;
