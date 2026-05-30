@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Data Engineering Learning Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <p class="eyebrow">Data Engineering Practice</p>
+      <h1>Personal Learning Tracker</h1>
+      <p class="intro">
+        Track small study tasks while practicing Git, GitHub, Codex Desktop, Codex CLI, and Cursor.
+      </p>
+    </header>
+
+    <section class="summary-grid" aria-label="Learning progress summary">
+      <article class="summary-card">
+        <span class="summary-label">Total Tasks</span>
+        <strong id="total-count">0</strong>
+      </article>
+      <article class="summary-card">
+        <span class="summary-label">In Progress</span>
+        <strong id="progress-count">0</strong>
+      </article>
+      <article class="summary-card">
+        <span class="summary-label">Done</span>
+        <strong id="done-count">0</strong>
+      </article>
+    </section>
+
+    <section class="tracker-layout">
+      <form id="task-form" class="task-form">
+        <h2>Add Learning Task</h2>
+
+        <label for="topic">Topic</label>
+        <input
+          id="topic"
+          name="topic"
+          type="text"
+          placeholder="Git, SQL, Python, Airflow, dbt"
+          required
+        >
+
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="Tool">Tool</option>
+          <option value="Concept">Concept</option>
+          <option value="Project">Project</option>
+          <option value="Practice">Practice</option>
+        </select>
+
+        <label for="status">Status</label>
+        <select id="status" name="status" required>
+          <option value="Not Started">Not Started</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+
+        <label for="notes">Notes</label>
+        <textarea
+          id="notes"
+          name="notes"
+          rows="4"
+          placeholder="What will you practice or remember?"
+        ></textarea>
+
+        <button type="submit">Add Task</button>
+      </form>
+
+      <section class="task-panel" aria-labelledby="task-list-heading">
+        <div class="task-panel-header">
+          <h2 id="task-list-heading">Learning Tasks</h2>
+          <p>Change status or delete tasks as you study.</p>
+        </div>
+
+        <div id="empty-state" class="empty-state">
+          No tasks yet. Add your first learning task to begin.
+        </div>
+
+        <ul id="task-list" class="task-list" aria-live="polite"></ul>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
