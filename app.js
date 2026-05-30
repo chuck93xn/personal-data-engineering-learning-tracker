@@ -5,11 +5,13 @@ const taskForm = document.querySelector("#task-form");
 const taskList = document.querySelector("#task-list");
 const emptyState = document.querySelector("#empty-state");
 const clearTasksButton = document.querySelector("#clear-tasks-button");
+const statusFilter = document.querySelector("#status-filter");
 const totalCount = document.querySelector("#total-count");
 const progressCount = document.querySelector("#progress-count");
 const doneCount = document.querySelector("#done-count");
 
 let tasks = loadTasks();
+let currentStatusFilter = "All";
 
 function loadTasks() {
   const savedTasks = localStorage.getItem(STORAGE_KEY);
@@ -96,6 +98,14 @@ function clearAllTasks() {
   render();
 }
 
+function filterTasksByStatus() {
+  if (currentStatusFilter === "All") {
+    return tasks;
+  }
+
+  return tasks.filter((task) => task.status === currentStatusFilter);
+}
+
 function formatDate(isoDate) {
   return new Intl.DateTimeFormat("en-AU", {
     year: "numeric",
@@ -159,10 +169,15 @@ function renderTask(task) {
 }
 
 function renderTasks() {
-  taskList.innerHTML = "";
-  emptyState.classList.toggle("is-hidden", tasks.length > 0);
+  const visibleTasks = filterTasksByStatus();
 
-  tasks.forEach((task) => {
+  taskList.innerHTML = "";
+  emptyState.classList.toggle("is-hidden", visibleTasks.length > 0);
+  emptyState.textContent = tasks.length === 0
+    ? "No tasks yet. Add your first learning task to begin."
+    : `No ${currentStatusFilter.toLowerCase()} tasks found.`;
+
+  visibleTasks.forEach((task) => {
     taskList.appendChild(renderTask(task));
   });
 }
@@ -197,8 +212,14 @@ function handleTaskListChange(event) {
   }
 }
 
+function handleStatusFilterChange(event) {
+  currentStatusFilter = event.target.value;
+  renderTasks();
+}
+
 taskForm.addEventListener("submit", addTask);
 clearTasksButton.addEventListener("click", clearAllTasks);
+statusFilter.addEventListener("change", handleStatusFilterChange);
 taskList.addEventListener("click", handleTaskListClick);
 taskList.addEventListener("change", handleTaskListChange);
 
