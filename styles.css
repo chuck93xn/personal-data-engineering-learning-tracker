@@ -182,9 +182,9 @@ h2 {
 .task-panel-header {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
   align-items: flex-start;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .task-panel-header p {
@@ -199,6 +199,7 @@ h2 {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .export-button {
@@ -247,7 +248,9 @@ h2 {
   gap: 12px;
   align-items: flex-end;
   justify-content: flex-end;
-  margin-bottom: 18px;
+  padding-top: 16px;
+  margin-bottom: 22px;
+  border-top: 1px solid var(--border);
 }
 
 .filter-field {
@@ -270,11 +273,12 @@ h2 {
 }
 
 .empty-state {
-  padding: 28px;
+  padding: 32px 24px;
   border: 1px dashed var(--border);
   border-radius: 8px;
   color: var(--muted);
   text-align: center;
+  background: #fbfcff;
 }
 
 .empty-state.is-hidden {
@@ -292,7 +296,7 @@ h2 {
 .task-card {
   display: grid;
   gap: 14px;
-  padding: 18px;
+  padding: 20px;
   border: 1px solid var(--border);
   border-left: 5px solid var(--accent);
   border-radius: 8px;
@@ -303,11 +307,13 @@ h2 {
   display: flex;
   justify-content: space-between;
   gap: 12px;
+  align-items: flex-start;
 }
 
 .task-topic {
-  margin: 0;
-  font-size: 1.08rem;
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  line-height: 1.3;
 }
 
 .task-meta {
@@ -328,6 +334,8 @@ h2 {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .task-actions select {
@@ -435,6 +443,10 @@ h2 {
 
   .panel-actions {
     width: 100%;
+  }
+
+  .task-panel-header {
+    gap: 14px;
   }
 
   .filter-row {

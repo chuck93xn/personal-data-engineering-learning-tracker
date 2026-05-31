@@ -254,7 +254,7 @@ function renderTasks() {
   taskList.innerHTML = "";
   emptyState.classList.toggle("is-hidden", visibleTasks.length > 0);
   emptyState.textContent = tasks.length === 0
-    ? "No tasks yet. Add your first learning task to begin."
+    ? "No learning tasks yet. Add your first task to start tracking progress."
     : "No tasks match the selected filters.";
 
   visibleTasks.forEach((task) => {
