@@ -23,6 +23,9 @@ Practiced the Git and GitHub feature branch workflow with the Personal Data Engi
 - Status filter
 - Category filter
 - Edit task
+- Export JSON
+- App JavaScript refactor
+- UI polish
 
 ## Git Commands Used
 
@@ -79,9 +82,7 @@ git stash pop
 
 ## Next Plan
 
-1. Add a small `Export JSON` feature.
-2. Add an `Import JSON` feature later.
-3. Use Codex CLI to refactor the JavaScript functions.
-4. Use Cursor with Codex to improve the UI or add a small feature.
-5. Continue practicing feature branches, GitHub pushes, and Pull Requests.
-6. Later, deploy the project with GitHub Pages.
+1. Review the refactored `app.js` and make sure the function groups are understandable.
+2. Test the polished UI on desktop and a narrow browser width.
+3. Continue practicing small feature branches when adding new ideas.
+4. Later, deploy the project with GitHub Pages.
