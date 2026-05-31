@@ -7,6 +7,7 @@ const submitTaskButton = document.querySelector("#submit-task-button");
 const cancelEditButton = document.querySelector("#cancel-edit-button");
 const taskList = document.querySelector("#task-list");
 const emptyState = document.querySelector("#empty-state");
+const exportTasksButton = document.querySelector("#export-tasks-button");
 const clearTasksButton = document.querySelector("#clear-tasks-button");
 const statusFilter = document.querySelector("#status-filter");
 const categoryFilter = document.querySelector("#category-filter");
@@ -135,6 +136,20 @@ function clearAllTasks() {
   render();
 }
 
+function exportTasksAsJson() {
+  const json = JSON.stringify(tasks, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const downloadUrl = URL.createObjectURL(blob);
+  const downloadLink = document.createElement("a");
+
+  downloadLink.href = downloadUrl;
+  downloadLink.download = "learning-tasks.json";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
+  URL.revokeObjectURL(downloadUrl);
+}
+
 function startEditingTask(taskId) {
   const task = tasks.find((item) => item.id === taskId);
 
@@ -252,6 +267,7 @@ function renderSummary() {
   totalCount.textContent = tasks.length;
   progressCount.textContent = tasks.filter((task) => task.status === "In Progress").length;
   doneCount.textContent = tasks.filter((task) => task.status === "Done").length;
+  exportTasksButton.disabled = tasks.length === 0;
   clearTasksButton.disabled = tasks.length === 0;
 }
 
@@ -298,6 +314,7 @@ cancelEditButton.addEventListener("click", () => {
   taskForm.reset();
 });
 clearTasksButton.addEventListener("click", clearAllTasks);
+exportTasksButton.addEventListener("click", exportTasksAsJson);
 statusFilter.addEventListener("change", handleStatusFilterChange);
 categoryFilter.addEventListener("change", handleCategoryFilterChange);
 taskList.addEventListener("click", handleTaskListClick);
