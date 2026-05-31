@@ -20,6 +20,7 @@ The goal is to practice a complete small project workflow while learning data en
 - Show a simple progress summary.
 - Filter tasks by status.
 - Filter tasks by category.
+- Edit existing tasks.
 
 ## How to Run
 
@@ -70,6 +71,7 @@ Completed practice branches:
 
 - `feature/status-filter`
 - `feature/category-filter`
+- `feature/edit-task`
 
 ## Suggested Learning Tasks
 
@@ -87,7 +89,8 @@ Try adding tasks like:
 
 Keep these for later, after the first version works:
 
-- Edit existing tasks
-- Export tasks as JSON
-- Import tasks from JSON
-- Deploy with GitHub Pages
+- Export tasks as JSON.
+- Import tasks from JSON.
+- Use Codex CLI to refactor the JavaScript functions.
+- Use Cursor with Codex to improve the UI or add a small feature.
+- Deploy with GitHub Pages.

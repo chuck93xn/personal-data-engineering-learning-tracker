@@ -80,7 +80,8 @@ git stash pop
 ## Next Plan
 
 1. Add a small `Export JSON` feature.
-2. Practice creating another feature branch.
-3. Push the branch to GitHub.
-4. Open and merge another Pull Request.
-5. Later, deploy the project with GitHub Pages.
+2. Add an `Import JSON` feature later.
+3. Use Codex CLI to refactor the JavaScript functions.
+4. Use Cursor with Codex to improve the UI or add a small feature.
+5. Continue practicing feature branches, GitHub pushes, and Pull Requests.
+6. Later, deploy the project with GitHub Pages.
