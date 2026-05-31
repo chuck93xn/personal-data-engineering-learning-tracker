@@ -1,6 +1,7 @@
 const STORAGE_KEY = "dataEngineeringLearningTasks";
 const STATUS_OPTIONS = ["Not Started", "In Progress", "Done"];
 
+// DOM references
 const taskForm = document.querySelector("#task-form");
 const formHeading = document.querySelector("#form-heading");
 const submitTaskButton = document.querySelector("#submit-task-button");
@@ -15,11 +16,13 @@ const totalCount = document.querySelector("#total-count");
 const progressCount = document.querySelector("#progress-count");
 const doneCount = document.querySelector("#done-count");
 
+// State
 let tasks = loadTasks();
 let currentStatusFilter = "All";
 let currentCategoryFilter = "All";
 let editingTaskId = null;
 
+// Storage helpers
 function loadTasks() {
   const savedTasks = localStorage.getItem(STORAGE_KEY);
 
@@ -39,13 +42,20 @@ function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
-function createTask(formData) {
+// Task data helpers
+function getTaskFieldsFromForm(formData) {
   return {
-    id: createTaskId(),
     topic: formData.get("topic").trim(),
     category: formData.get("category"),
     status: formData.get("status"),
-    notes: formData.get("notes").trim(),
+    notes: formData.get("notes").trim()
+  };
+}
+
+function createTask(formData) {
+  return {
+    id: createTaskId(),
+    ...getTaskFieldsFromForm(formData),
     createdAt: new Date().toISOString()
   };
 }
@@ -62,14 +72,14 @@ function addTask(event) {
   event.preventDefault();
 
   const formData = new FormData(taskForm);
-  const topic = formData.get("topic").trim();
+  const taskFields = getTaskFieldsFromForm(formData);
 
-  if (!topic) {
+  if (!taskFields.topic) {
     return;
   }
 
   if (editingTaskId) {
-    updateTaskFromForm(editingTaskId, formData);
+    updateTask(editingTaskId, taskFields);
     resetFormMode();
   } else {
     tasks.unshift(createTask(formData));
@@ -80,31 +90,18 @@ function addTask(event) {
   taskForm.reset();
 }
 
-function updateTaskFromForm(taskId, formData) {
+function updateTask(taskId, updatedFields) {
   tasks = tasks.map((task) => {
     if (task.id !== taskId) {
       return task;
     }
 
-    return {
-      ...task,
-      topic: formData.get("topic").trim(),
-      category: formData.get("category"),
-      status: formData.get("status"),
-      notes: formData.get("notes").trim()
-    };
+    return { ...task, ...updatedFields };
   });
 }
 
 function updateTaskStatus(taskId, status) {
-  tasks = tasks.map((task) => {
-    if (task.id !== taskId) {
-      return task;
-    }
-
-    return { ...task, status };
-  });
-
+  updateTask(taskId, { status });
   saveTasks();
   render();
 }
@@ -150,6 +147,16 @@ function exportTasksAsJson() {
   URL.revokeObjectURL(downloadUrl);
 }
 
+function getVisibleTasks() {
+  return tasks.filter((task) => {
+    const matchesStatus = currentStatusFilter === "All" || task.status === currentStatusFilter;
+    const matchesCategory = currentCategoryFilter === "All" || task.category === currentCategoryFilter;
+
+    return matchesStatus && matchesCategory;
+  });
+}
+
+// Form mode helpers
 function startEditingTask(taskId) {
   const task = tasks.find((item) => item.id === taskId);
 
@@ -175,15 +182,7 @@ function resetFormMode() {
   cancelEditButton.hidden = true;
 }
 
-function getVisibleTasks() {
-  return tasks.filter((task) => {
-    const matchesStatus = currentStatusFilter === "All" || task.status === currentStatusFilter;
-    const matchesCategory = currentCategoryFilter === "All" || task.category === currentCategoryFilter;
-
-    return matchesStatus && matchesCategory;
-  });
-}
-
+// Rendering helpers
 function formatDate(isoDate) {
   return new Intl.DateTimeFormat("en-AU", {
     year: "numeric",
@@ -276,6 +275,7 @@ function render() {
   renderTasks();
 }
 
+// Event handlers
 function handleTaskListClick(event) {
   const action = event.target.dataset.action;
   const taskId = event.target.dataset.id;
@@ -308,16 +308,23 @@ function handleCategoryFilterChange(event) {
   renderTasks();
 }
 
-taskForm.addEventListener("submit", addTask);
-cancelEditButton.addEventListener("click", () => {
+function handleCancelEdit() {
   resetFormMode();
   taskForm.reset();
-});
-clearTasksButton.addEventListener("click", clearAllTasks);
-exportTasksButton.addEventListener("click", exportTasksAsJson);
-statusFilter.addEventListener("change", handleStatusFilterChange);
-categoryFilter.addEventListener("change", handleCategoryFilterChange);
-taskList.addEventListener("click", handleTaskListClick);
-taskList.addEventListener("change", handleTaskListChange);
+}
 
-render();
+// Initialization
+function initializeApp() {
+  taskForm.addEventListener("submit", addTask);
+  cancelEditButton.addEventListener("click", handleCancelEdit);
+  clearTasksButton.addEventListener("click", clearAllTasks);
+  exportTasksButton.addEventListener("click", exportTasksAsJson);
+  statusFilter.addEventListener("change", handleStatusFilterChange);
+  categoryFilter.addEventListener("change", handleCategoryFilterChange);
+  taskList.addEventListener("click", handleTaskListClick);
+  taskList.addEventListener("change", handleTaskListChange);
+
+  render();
+}
+
+initializeApp();
